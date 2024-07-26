@@ -15,7 +15,7 @@
         android:text="+"
         android:textColor="@android:color/white"
         android:textSize="30sp"
-        app:backgroundTint="#00008B"
+        app:backgroundTint="#434371"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
