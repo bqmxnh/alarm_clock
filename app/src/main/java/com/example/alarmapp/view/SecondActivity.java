@@ -1,6 +1,7 @@
 package com.example.alarmapp.view;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TimePicker;
@@ -42,7 +43,11 @@ public class SecondActivity extends AppCompatActivity {
 
         selectDateButton.setOnClickListener(v -> openDatePickerDialog());
         saveAlarmButton.setOnClickListener(v -> saveAlarm());
-        cancelButton.setOnClickListener(v -> finish());
+        cancelButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void openDatePickerDialog() {

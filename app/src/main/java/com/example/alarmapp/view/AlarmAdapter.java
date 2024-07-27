@@ -78,7 +78,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         // Remove the alarm from the adapter and notify changes
         remove(alarm);
         notifyDataSetChanged();
-        Toast.makeText(getContext(), "Alarm deleted", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "Alarm deleted", Toast.LENGTH_SHORT).show();
     }
 
     private void updateAlarm(Alarm alarm) {
