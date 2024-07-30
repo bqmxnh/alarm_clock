@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.telephony.SmsManager;
 import android.util.Log;
 import androidx.core.app.ActivityCompat;
@@ -31,7 +32,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     private static final int NOTIFICATION_ID = 1;
     private static final String TAG = "AlarmReceiver";
     private static final String PHONE_NUMBER = "0741233074";  // Replace with actual phone number
-    private static final String SMS_MESSAGE = "Your alarm is going off!";
+    private static final String SMS_MESSAGE_START = "Your alarm is going off!";
+    private static final String SMS_MESSAGE_END = "Your alarm has ended!";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -56,7 +58,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                 if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.SEND_SMS)
                         == PackageManager.PERMISSION_GRANTED) {
-                    sendSms();
+                    sendSms(SMS_MESSAGE_START);
+                    sendDelayedSms(context); // 60000 ms = 1 minute
                 } else {
                     requestSmsPermission(context);
                 }
@@ -128,16 +131,21 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    private void sendSms() {
+    private void sendSms(String message) {
         try {
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(AlarmReceiver.PHONE_NUMBER, null, AlarmReceiver.SMS_MESSAGE, null, null);
-            Log.d(TAG, "sendSms: SMS sent");
+            smsManager.sendTextMessage(AlarmReceiver.PHONE_NUMBER, null, message, null, null);
+            Log.d(TAG, "sendSms: SMS sent: " + message);
         } catch (SecurityException e) {
             Log.e(TAG, "sendSms: SecurityException", e);
         } catch (Exception e) {
             Log.e(TAG, "sendSms: Exception", e);
         }
+    }
+
+    private void sendDelayedSms(Context context) {
+        Handler handler = new Handler(context.getMainLooper());
+        handler.postDelayed(() -> sendSms(AlarmReceiver.SMS_MESSAGE_END), 60000);
     }
 
     private void requestSmsPermission(Context context) {
