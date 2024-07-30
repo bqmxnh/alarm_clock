@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.alarmapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -39,6 +39,7 @@ dependencies {
 
     // Room dependencies
     implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

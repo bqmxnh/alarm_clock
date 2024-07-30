@@ -1,8 +1,14 @@
 package com.example.alarmapp.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.Date;
 
+@Entity(tableName = "alarms")
 public class Alarm {
+
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private Date time;
     private Date date;
@@ -20,7 +26,6 @@ public class Alarm {
         this.enabled = enabled;
     }
 
-    // Getters and setters
     public int getId() {
         return id;
     }

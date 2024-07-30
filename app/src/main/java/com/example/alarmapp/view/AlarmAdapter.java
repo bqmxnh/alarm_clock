@@ -74,7 +74,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
     private void deleteAlarm(Alarm alarm) {
         // Perform delete operation directly on the UI thread
-        alarmDAO.deleteAlarm(alarm.getId());
+        alarmDAO.deleteAlarm(alarm);
         // Remove the alarm from the adapter and notify changes
         remove(alarm);
         notifyDataSetChanged();
