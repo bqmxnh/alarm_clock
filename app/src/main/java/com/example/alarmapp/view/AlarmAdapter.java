@@ -44,6 +44,8 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         TextView timeTextView = convertView.findViewById(R.id.timeTextView);
         TextView dateTextView = convertView.findViewById(R.id.dateTextView);
         Switch alarmSwitch = convertView.findViewById(R.id.alarmSwitch);
+        TextView repeatDailyTextView = convertView.findViewById(R.id.repeatDailyTextView);
+        TextView repeatWeeklyTextView = convertView.findViewById(R.id.repeatWeeklyTextView);
         Button updateButton = convertView.findViewById(R.id.updateButton);
         Button deleteButton = convertView.findViewById(R.id.deleteButton);
 
@@ -51,6 +53,8 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
             timeTextView.setText(timeFormat.format(alarm.getTime()));
             dateTextView.setText(dateFormat.format(alarm.getDate()));
             alarmSwitch.setChecked(alarm.isEnabled());
+            repeatDailyTextView.setText(alarm.isRepeatDaily() ? "Daily" : "Not daily");
+            repeatWeeklyTextView.setText(alarm.isRepeatWeekly() ? "Weekly" : "Not weekly");
 
             alarmSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 alarm.setEnabled(isChecked);

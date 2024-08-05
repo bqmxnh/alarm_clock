@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -33,6 +34,8 @@ public class SecondActivity extends AppCompatActivity {
     private AlarmDAO alarmDAO;
     private TimePicker timePicker;
     private Button selectDateButton, saveAlarmButton, cancelButton;
+    private Switch repeatDailySwitch, repeatWeeklySwitch;
+
     private Date selectedDate;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
@@ -50,6 +53,9 @@ public class SecondActivity extends AppCompatActivity {
         selectDateButton = findViewById(R.id.selectDateButton);
         saveAlarmButton = findViewById(R.id.saveAlarmButton);
         cancelButton = findViewById(R.id.cancelButton);
+
+        repeatDailySwitch = findViewById(R.id.repeatDailySwitch);
+        repeatWeeklySwitch = findViewById(R.id.repeatWeeklySwitch);
 
         selectedDate = new Date();
 
@@ -100,9 +106,12 @@ public class SecondActivity extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
 
+        boolean repeatDaily = repeatDailySwitch.isChecked();
+        boolean repeatWeekly = repeatWeeklySwitch.isChecked();
+
         Date alarmTime = calendar.getTime();
 
-        Alarm alarm = new Alarm(alarmTime, selectedDate, false, false, true);
+        Alarm alarm = new Alarm(alarmTime, selectedDate, repeatDaily, repeatWeekly, true);
 
         long alarmId = alarmDAO.insertAlarm(alarm);
 

@@ -31,9 +31,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     private static final String CHANNEL_ID = "alarm_channel";
     private static final int NOTIFICATION_ID = 1;
     private static final String TAG = "AlarmReceiver";
-    private static final String PHONE_NUMBER = "0741233074";  // Replace with actual phone number
-    private static final String SMS_MESSAGE_START = "Your alarm is going off!";
-    private static final String SMS_MESSAGE_END = "Your alarm has ended!";
+    private static final String PHONE_NUMBER = "0741233074";
+    private static final String SMS_MESSAGE_START = "relay on";
+    private static final String SMS_MESSAGE_END = "relay off";
+    private static final long TWO_MINUTES = 120000L;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -59,7 +60,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.SEND_SMS)
                         == PackageManager.PERMISSION_GRANTED) {
                     sendSms(SMS_MESSAGE_START);
-                    sendDelayedSms(context); // 60000 ms = 1 minute
+                    sendDelayedSms(context);
                 } else {
                     requestSmsPermission(context);
                 }
@@ -121,16 +122,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    private void requestNotificationPermission(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Intent permissionIntent = new Intent();
-            permissionIntent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-            permissionIntent.putExtra("app_package", context.getPackageName());
-            permissionIntent.putExtra("app_uid", context.getApplicationInfo().uid);
-            context.startActivity(permissionIntent);
-        }
-    }
-
     private void sendSms(String message) {
         try {
             SmsManager smsManager = SmsManager.getDefault();
@@ -146,10 +137,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     private void sendDelayedSms(Context context) {
         Handler handler = new Handler(context.getMainLooper());
         handler.postDelayed(() -> sendSms(AlarmReceiver.SMS_MESSAGE_END), 60000);
-    }
-
-    private void requestSmsPermission(Context context) {
-        ActivityCompat.requestPermissions((MainActivity) context, new String[]{android.Manifest.permission.SEND_SMS}, REQUEST_SMS_PERMISSION);
     }
 
     @SuppressLint("ScheduleExactAlarm")
@@ -170,6 +157,20 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         if (alarmManager != null) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextAlarmTime.getTime(), pendingIntent);
+        }
+    }
+
+    private void requestSmsPermission(Context context) {
+        ActivityCompat.requestPermissions((MainActivity) context, new String[]{android.Manifest.permission.SEND_SMS}, REQUEST_SMS_PERMISSION);
+    }
+
+    private void requestNotificationPermission(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Intent permissionIntent = new Intent();
+            permissionIntent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            permissionIntent.putExtra("app_package", context.getPackageName());
+            permissionIntent.putExtra("app_uid", context.getApplicationInfo().uid);
+            context.startActivity(permissionIntent);
         }
     }
 }

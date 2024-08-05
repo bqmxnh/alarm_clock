@@ -6,7 +6,7 @@
     android:padding="16dp"
     android:gravity="center_vertical">
 
-    <!-- Container for time and date -->
+    <!-- Container for time, date, repeatDaily, and repeatWeekly -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,6 +26,22 @@
             android:layout_height="wrap_content"
             android:textSize="17sp"
             android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/repeatDailyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/repeatWeeklyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="2dp" />
     </LinearLayout>
 
     <!-- Switch for alarm status -->
