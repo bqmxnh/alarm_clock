@@ -6,11 +6,17 @@ import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -24,6 +30,7 @@ import com.example.alarmapp.dao.AlarmDAO;
 import com.example.alarmapp.database.AlarmDatabase;
 import com.example.alarmapp.model.Alarm;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,11 +68,7 @@ public class SecondActivity extends AppCompatActivity {
 
         selectDateButton.setOnClickListener(v -> openDatePickerDialog());
         saveAlarmButton.setOnClickListener(v -> saveAlarm());
-        cancelButton.setOnClickListener(v -> {
-            Intent intent = new Intent(SecondActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        });
+        cancelButton.setOnClickListener(v -> cancelSelection());
 
         String packageName = getPackageName();
         Intent intent = new Intent();
@@ -134,5 +137,11 @@ public class SecondActivity extends AppCompatActivity {
         if (alarmManager != null) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.getTime(), pendingIntent);
         }
+    }
+
+    private void cancelSelection() {
+        Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

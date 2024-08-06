@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">AlarmApp</string>
+    <string name="select_date">Select date</string>
+    <string name="repeat_daily">Daily</string>
+    <string name="repeat_weekly">Weekly</string>
+    <string name="save_alarm">Save alarm</string>
+    <string name="cancel">Cancel</string>
 </resources>
