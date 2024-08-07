@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="charcoal">#2e4756</color>
+    <color name="aquamarine">#42E2B8</color>
+    <color name="semi_transparent_charcoal">#332e4756</color>
+    <color name="semi_transparent_charcoal2">#402e4756</color>
+    <color name="emerald">#68D89B</color>
 </resources>

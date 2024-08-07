@@ -1,10 +1,14 @@
 <!-- res/layout/item_alarm.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="16dp"
-    android:gravity="center_vertical">
+    android:layout_margin="10dp"
+    android:backgroundTint="@null"
+    android:gravity="center_vertical"
+    style="@style/AlarmItemStyle">
 
     <!-- Container for time, date, repeatDaily, and repeatWeekly -->
     <LinearLayout
@@ -51,25 +55,26 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:minWidth="48dp"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <!-- Container for update and delete buttons -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/updateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Update"
+            android:text="@string/update"
             android:layout_marginEnd="8dp"/>
 
         <Button
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete" />
+            android:text="@string/delete" />
     </LinearLayout>
 </LinearLayout>

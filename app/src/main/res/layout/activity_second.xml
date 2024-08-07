@@ -1,9 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/secondary"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A7CCED">
+    android:background="@drawable/background_gradient"
+    tools:context=".view.SecondActivity">
 
     <TimePicker
         android:id="@+id/timePicker"
@@ -38,12 +41,14 @@
 
     <Switch
         android:id="@+id/repeatDailySwitch"
+        style="@style/CustomSwitchStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:minHeight="48dp"
         android:text="@string/repeat_daily"
-        android:textSize="20sp"
+        android:textSize="26sp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectDateButton"
@@ -52,12 +57,14 @@
 
     <Switch
         android:id="@+id/repeatWeeklySwitch"
+        style="@style/CustomSwitchStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:minHeight="48dp"
         android:text="@string/repeat_weekly"
-        android:textSize="20sp"
+        android:textSize="26sp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatDailySwitch"
@@ -71,7 +78,8 @@
         android:layout_marginTop="40dp"
         android:text="@string/save_alarm"
         android:textSize="26sp"
-        app:backgroundTint="#304D6D"
+        app:backgroundTint="@null"
+        style="@style/CustomButtonStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatWeeklySwitch"
@@ -84,7 +92,8 @@
         android:layout_marginTop="16dp"
         android:text="@string/cancel"
         android:textSize="26sp"
-        app:backgroundTint="#304D6D"
+        app:backgroundTint="@null"
+        style="@style/CustomButtonStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/saveAlarmButton"
