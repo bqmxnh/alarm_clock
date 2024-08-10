@@ -15,6 +15,7 @@ import android.os.PowerManager;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Switch;
@@ -85,8 +86,10 @@ public class SecondActivity extends AppCompatActivity {
 
     private void openDatePickerDialog() {
         final Calendar calendar = Calendar.getInstance();
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
+                R.style.CustomDatePickerDialog,
                 (view, year, month, dayOfMonth) -> {
                     calendar.set(year, month, dayOfMonth);
                     selectedDate = calendar.getTime();
@@ -98,6 +101,9 @@ public class SecondActivity extends AppCompatActivity {
         );
         datePickerDialog.show();
     }
+
+
+
 
     private void saveAlarm() {
         int hour = timePicker.getHour();
@@ -144,4 +150,6 @@ public class SecondActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
 }

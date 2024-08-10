@@ -3,9 +3,11 @@
     <string name="select_date">Select date</string>
     <string name="repeat_daily">Daily</string>
     <string name="repeat_weekly">Weekly</string>
+    <string name="once">Once</string>
     <string name="save_alarm">Save alarm</string>
     <string name="cancel">Cancel</string>
     <string name="plus">+</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
+    <string name="confirm">Confirm</string>
 </resources>

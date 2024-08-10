@@ -1,5 +1,6 @@
 package com.example.alarmapp.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,52 +44,44 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
         TextView timeTextView = convertView.findViewById(R.id.timeTextView);
         TextView dateTextView = convertView.findViewById(R.id.dateTextView);
+        TextView repeatTextView = convertView.findViewById(R.id.repeatTextView);
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch alarmSwitch = convertView.findViewById(R.id.alarmSwitch);
-        TextView repeatDailyTextView = convertView.findViewById(R.id.repeatDailyTextView);
-        TextView repeatWeeklyTextView = convertView.findViewById(R.id.repeatWeeklyTextView);
-        Button updateButton = convertView.findViewById(R.id.updateButton);
         Button deleteButton = convertView.findViewById(R.id.deleteButton);
 
         if (alarm != null) {
             timeTextView.setText(timeFormat.format(alarm.getTime()));
             dateTextView.setText(dateFormat.format(alarm.getDate()));
             alarmSwitch.setChecked(alarm.isEnabled());
-            repeatDailyTextView.setText(alarm.isRepeatDaily() ? "Daily" : "Not daily");
-            repeatWeeklyTextView.setText(alarm.isRepeatWeekly() ? "Weekly" : "Not weekly");
+
+            if (alarm.isRepeatDaily()) {
+                repeatTextView.setText(R.string.repeat_daily);
+            } else if (alarm.isRepeatWeekly()) {
+                repeatTextView.setText(R.string.repeat_weekly);
+            } else {
+                repeatTextView.setText(R.string.once);
+            }
 
             alarmSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 alarm.setEnabled(isChecked);
                 updateAlarm(alarm);
             });
 
-            updateButton.setOnClickListener(v -> {
-                // Handle update button click
-                // You could open a new activity to edit the alarm details
-                Toast.makeText(getContext(), "Update functionality not implemented", Toast.LENGTH_SHORT).show();
-            });
-
-            deleteButton.setOnClickListener(v -> {
-                // Delete alarm directly on the UI thread
-                deleteAlarm(alarm);
-            });
+            deleteButton.setOnClickListener(v -> deleteAlarm(alarm));
         }
 
         return convertView;
     }
 
     private void deleteAlarm(Alarm alarm) {
-        // Perform delete operation directly on the UI thread
         alarmDAO.deleteAlarm(alarm);
-        // Remove the alarm from the adapter and notify changes
         remove(alarm);
         notifyDataSetChanged();
-        //Toast.makeText(getContext(), "Alarm deleted", Toast.LENGTH_SHORT).show();
     }
 
     private void updateAlarm(Alarm alarm) {
-        // Perform update operation directly on the UI thread
         alarmDAO.updateAlarm(alarm);
-        // Notify the adapter that data has changed
         notifyDataSetChanged();
     }
 }
