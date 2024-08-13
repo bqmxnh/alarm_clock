@@ -15,10 +15,10 @@
         android:layout_margin="10dp"
         android:dividerHeight="10dp"
         android:divider="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/my_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:context=".view.MainActivity" />
 
     <com.google.android.material.button.MaterialButton

@@ -68,7 +68,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadAlarms() {
         List<Alarm> alarms = alarmDatabase.alarmDAO().getAllAlarms();
-        alarmAdapter = new AlarmAdapter(this, alarms, alarmDatabase.alarmDAO());
+        alarmAdapter = new AlarmAdapter(this, alarms, alarmDatabase.alarmDAO(), this::openAlarmEditor);
         alarmListView.setAdapter(alarmAdapter);
+    }
+
+    private void openAlarmEditor(Alarm alarm) {
+        Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+        intent.putExtra("alarmId", alarm.getId()); // Pass the alarm ID to SecondActivity
+        startActivity(intent);
     }
 }

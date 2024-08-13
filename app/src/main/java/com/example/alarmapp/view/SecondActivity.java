@@ -6,18 +6,11 @@ import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -31,7 +24,6 @@ import com.example.alarmapp.dao.AlarmDAO;
 import com.example.alarmapp.database.AlarmDatabase;
 import com.example.alarmapp.model.Alarm;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,6 +38,7 @@ public class SecondActivity extends AppCompatActivity {
 
     private Date selectedDate;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+    private int alarmId = -1; // Default value indicating no alarm to edit
 
     @SuppressLint("BatteryLife")
     @Override
@@ -70,6 +63,23 @@ public class SecondActivity extends AppCompatActivity {
         selectDateButton.setOnClickListener(v -> openDatePickerDialog());
         saveAlarmButton.setOnClickListener(v -> saveAlarm());
         cancelButton.setOnClickListener(v -> cancelSelection());
+
+        // Retrieve the alarm ID from the intent
+        alarmId = getIntent().getIntExtra("alarmId", -1);
+
+        if (alarmId != -1) {
+            Alarm alarm = alarmDAO.getAlarm(alarmId);
+            if (alarm != null) {
+                timePicker.setHour(alarm.getTime().getHours());
+                timePicker.setMinute(alarm.getTime().getMinutes());
+                selectedDate = alarm.getDate();
+                selectDateButton.setText(dateFormat.format(selectedDate));
+                repeatDailySwitch.setChecked(alarm.isRepeatDaily());
+                repeatWeeklySwitch.setChecked(alarm.isRepeatWeekly());
+            }
+        } else {
+            selectDateButton.setText(dateFormat.format(selectedDate));
+        }
 
         String packageName = getPackageName();
         Intent intent = new Intent();
@@ -102,9 +112,6 @@ public class SecondActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-
-
-
     private void saveAlarm() {
         int hour = timePicker.getHour();
         int minute = timePicker.getMinute();
@@ -122,26 +129,44 @@ public class SecondActivity extends AppCompatActivity {
 
         Alarm alarm = new Alarm(alarmTime, selectedDate, repeatDaily, repeatWeekly, true);
 
-        long alarmId = alarmDAO.insertAlarm(alarm);
+        if (alarmId == -1) {
+            alarmId = (int) alarmDAO.insertAlarm(alarm);
+            scheduleAlarm(alarmId, alarmTime);
+            Toast.makeText(this, "Alarm set for " + dateFormat.format(selectedDate) + " at " + String.format(Locale.getDefault(), "%02d:%02d", hour, minute), Toast.LENGTH_SHORT).show();
+        } else {
+            alarm.setId(alarmId);
+            alarmDAO.updateAlarm(alarm);
+            cancelScheduledAlarm(alarmId);
+            scheduleAlarm(alarmId, alarmTime);
+            Toast.makeText(this, "Alarm updated for " + dateFormat.format(selectedDate) + " at " + String.format(Locale.getDefault(), "%02d:%02d", hour, minute), Toast.LENGTH_SHORT).show();
+        }
 
-        scheduleAlarm(alarmId, alarmTime);
-
-        Toast.makeText(this, "Alarm set for " + dateFormat.format(selectedDate) + " at " + String.format(Locale.getDefault(), "%02d:%02d", hour, minute), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(SecondActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
     @SuppressLint("ScheduleExactAlarm")
-    private void scheduleAlarm(long alarmId, Date alarmTime) {
+    private void scheduleAlarm(int alarmId, Date alarmTime) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(this, AlarmReceiver.class);
         intent.putExtra("alarmId", alarmId);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         if (alarmManager != null) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.getTime(), pendingIntent);
+        }
+    }
+
+    private void cancelScheduledAlarm(int alarmId) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarmId, intent, PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE);
+
+        if (alarmManager != null && pendingIntent != null) {
+            alarmManager.cancel(pendingIntent);
         }
     }
 
@@ -150,6 +175,4 @@ public class SecondActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-
 }

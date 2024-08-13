@@ -24,13 +24,19 @@ import java.util.Locale;
 
 public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
+    public interface OnItemClickListener {
+        void onItemClick(Alarm alarm);
+    }
+
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
     private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private AlarmDAO alarmDAO;
+    private OnItemClickListener onItemClickListener;
 
-    public AlarmAdapter(@NonNull Context context, @NonNull List<Alarm> alarms, @NonNull AlarmDAO alarmDAO) {
+    public AlarmAdapter(@NonNull Context context, @NonNull List<Alarm> alarms, @NonNull AlarmDAO alarmDAO, OnItemClickListener onItemClickListener) {
         super(context, 0, alarms);
         this.alarmDAO = alarmDAO;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -45,7 +51,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         TextView timeTextView = convertView.findViewById(R.id.timeTextView);
         TextView dateTextView = convertView.findViewById(R.id.dateTextView);
         TextView repeatTextView = convertView.findViewById(R.id.repeatTextView);
-
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch alarmSwitch = convertView.findViewById(R.id.alarmSwitch);
         Button deleteButton = convertView.findViewById(R.id.deleteButton);
@@ -69,6 +74,13 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
             });
 
             deleteButton.setOnClickListener(v -> deleteAlarm(alarm));
+
+            // Set an OnClickListener for the entire item
+            convertView.setOnClickListener(v -> {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(alarm);
+                }
+            });
         }
 
         return convertView;
