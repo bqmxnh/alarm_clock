@@ -34,6 +34,7 @@
         <activity android:name=".view.SecondActivity"/>
         <receiver android:name=".broadcast.AlarmReceiver" android:exported="true" />
 
+
     </application>
 
 </manifest>

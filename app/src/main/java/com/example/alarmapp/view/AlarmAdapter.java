@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,7 +74,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
             deleteButton.setOnClickListener(v -> deleteAlarm(alarm));
 
-            // Set an OnClickListener for the entire item
             convertView.setOnClickListener(v -> {
                 if (onItemClickListener != null) {
                     onItemClickListener.onItemClick(alarm);
